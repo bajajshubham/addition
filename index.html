@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wasm</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <script type="module">
+    import { add, sqrRoot } from "./build/release.js"; //wasm glue file
+    import addNums from "./withoutWasm/add.js" //plain js created from ts file using tsc command
+    import { findSqrRootOf } from './withoutWasm/sqrRoot.js'
+
+
+    function adder() {
+      var num1 = document.querySelector('#num1').value;
+      var num2 = document.querySelector('#num2').value;
+      const start = performance.now()
+      document.getElementById("answer").innerText = add(parseInt(num1), parseInt(num2));
+      const end = performance.now()
+      console.log(`ADDER start:${start} end:${end} time taken:${end - start}`)
+    }
+
+    const findRoot = () => {
+      var numRoot = document.querySelector('#numRoot').value;
+      const start = performance.now()
+      document.getElementById("rootIs").innerText = sqrRoot(parseInt(numRoot));
+      const end = performance.now()
+      console.log(`SQUARE ROOT start:${start} end:${end} time taken:${end - start}`)
+    }
+
+    document.getElementById("addBtn").addEventListener("click", adder)
+    document.getElementById("rootBtn").addEventListener("click", findRoot)
+
+  </script>
+  <div class="adder">
+    <input type="number" name="num1" id="num1" class="inp">
+    <input type="number" name="num2" id="num2" class="inp">
+    <button class="btn" id="addBtn">Add</button>
+    <p>Answer: <span id="answer"></span></p>
+  </div>
+  <div class="sqrRoot">
+    <input type="number" name="num" id="numRoot" class="inp">
+    <button class="btn" id="rootBtn">Find root</button>
+    <p>Root is: <span id="rootIs"></span></p>
+  </div>
+</body>
+
+</html>
